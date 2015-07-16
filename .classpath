@@ -11,5 +11,6 @@
 			<attribute name="owner.project.facets" value="jpt.jpa"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Erik/Random Things/Projects/DCXP/Jama-1.0.3.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
