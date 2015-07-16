@@ -54,7 +54,7 @@ public class Algorithm {
 		double[][] arrayOf2DPoints = new double[numLines][2];
 		
 		try {
-			FileWriter fw = new FileWriter( "src/data2.txt" );
+			FileWriter fw = new FileWriter( "src/dataOutput.txt" );
 			double[][] points = matrix.getArrayCopy();
 			for( int i = 0; i < points[0].length; i++ ) {
 				double[] point = { points[0][i] , points[1][i] , points[2][i] };
