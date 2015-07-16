@@ -7,7 +7,19 @@ import Jama.*;
 public class Algorithm {
 	public static void main( String[] args ) {
 		File file = new File( "src\\data.txt" );
-		double[][] dataValues = new double [3][503];
+		int numLines = 0;
+		try {
+			Scanner sc = new Scanner( file );
+			while( sc.hasNextLine() ) {
+				sc.nextLine();
+				numLines++;
+			}
+			sc.close();
+		}
+		catch( FileNotFoundException e ) {
+			e.printStackTrace();
+		}
+		double[][] dataValues = new double[3][numLines];
 		try {
 			Scanner sc = new Scanner( file );
 			int count = 0;
@@ -39,7 +51,7 @@ public class Algorithm {
 		Plane plane = new Plane( uVector , vVector , normalVector );
 		plane.setPoint( getIntersectionBetweenThreeVectors( plane.getU(), plane.getV(), plane.getNormal() ) );
 		
-		double[][] arrayOf2DPoints = new double[503][2];
+		double[][] arrayOf2DPoints = new double[numLines][2];
 		
 		try {
 			FileWriter fw = new FileWriter( "src/data2.txt" );
@@ -142,13 +154,6 @@ public class Algorithm {
 	}
 	public static double getDotProduct( double[] u , double[] v ) {
 		return u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
-	}
-	public double[] getCrossProduct( double[] v1 , double[] v2 ) {
-		double[] crossProduct = new double[3];
-		crossProduct[0] = v1[1]*v2[2] - v2[0]*v1[1];
-		crossProduct[1] = v1[2]*v2[0] - v2[1]*v1[2];
-		crossProduct[2] = v1[0]*v2[1] - v2[2]*v1[0];
-		return crossProduct;
 	}
 	public static double getMagnitude( double[] vector ) {
 		return Math.sqrt( getDotProduct( vector , vector ) );
