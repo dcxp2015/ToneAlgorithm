@@ -7,11 +7,11 @@ import Jama.*;
 public class Algorithm {
 	public static void main( String[] args ) {
 		File file = new File( "src\\data.txt" );
-		double[][] dataValues = new double [3][2000];
+		double[][] dataValues = new double [3][503];
 		try {
 			Scanner sc = new Scanner( file );
 			int count = 0;
-			while( sc.hasNextLine() && count < 2000 ) {
+			while( sc.hasNextLine() && count < 503 ) {
 				sc.useDelimiter( ", |\\n" );
 				Double x = Double.valueOf( sc.next() );
 				Double y = Double.valueOf( sc.next() );
@@ -40,18 +40,68 @@ public class Algorithm {
 		Plane plane = new Plane( uVector , vVector , normalVector );
 		plane.setPoint( getIntersectionBetweenThreeVectors( plane.getU(), plane.getV(), plane.getNormal() ) );
 		
-		double[][] points = matrix.getArrayCopy();
-		double[] point = { points[0][0] , points[1][0] , points[2][0] };
-		double[] pointOnPlane = getCoordsOf3DPointOnPlane( point , plane );
+		double[][] arrayOf2DPoints = new double[503][2];
 		
-		System.out.println( Arrays.toString( plane.getU() ) );
-		System.out.println( Arrays.toString( plane.getV() ) );
-		System.out.println( Arrays.toString( plane.getNormal() ) );
-		System.out.println( Arrays.toString( plane.getPoint() ) );
-		System.out.println( Arrays.toString( point ) );
-		System.out.println( Arrays.toString( pointOnPlane ) );
+		try {
+			FileWriter fw = new FileWriter( "src/data2.txt" );
+			double[][] points = matrix.getArrayCopy();
+			for( int i = 0; i < points[0].length; i++ ) {
+				double[] point = { points[0][i] , points[1][i] , points[2][i] };
+				double[] pointOnPlane = getCoordsOf3DPointOnPlane( point , plane );
+				double[] constants = rref( pointOnPlane , plane );
+				arrayOf2DPoints[i][0] = constants[0];
+				arrayOf2DPoints[i][1] = constants[1];
+				System.out.println( constants[0] + ", " + constants[1] );
+				fw.write( constants[0] + ", " + constants[1] );
+				fw.write( System.getProperty( "line.separator" ) );
+			}
+			fw.close();
+		}
+		catch( Exception e ) {
+			e.printStackTrace();
+		}
+//		System.out.println( Arrays.toString( plane.getU() ) );
+//		System.out.println( Arrays.toString( plane.getV() ) );
+//		System.out.println( Arrays.toString( plane.getNormal() ) );
+//		System.out.println( Arrays.toString( plane.getPoint() ) );
+//		System.out.println( Arrays.toString( point ) );
+//		System.out.println( Arrays.toString( pointOnPlane ) );
+//		System.out.println( Arrays.deepToString( pointsOnPlane ) );
 		
 		
+	}
+	public static double[] rref( double[] pointOnPlane , Plane plane ) {
+		double[] constants = new double[2];
+		double[] uVector = plane.getU();
+		double[] vVector = plane.getV();
+		
+		double a11 = uVector[0];
+		double a12 = vVector[0];
+		double a13 = pointOnPlane[0];
+		double a21 = uVector[1];
+		double a22 = vVector[1];
+		double a23 = pointOnPlane[1];
+		
+//		double[][] matrixA = { {a11,a12,a13} , {a21,a22,a23} }; initialize matrix
+//		divide to make first column 1
+		double[][] matrixA = { {a11/a11,a12/a11,a13/a11} , {a21/a21,a22/a21,a23/a21} };
+//		subtract row1 from row2
+		matrixA[1][0] = matrixA[1][0] - matrixA[0][0];
+		matrixA[1][1] = matrixA[1][1] - matrixA[0][1];
+		matrixA[1][2] = matrixA[1][2] - matrixA[0][2];
+//		divide second row to make a22 = 1
+		double temp = matrixA[1][1];
+		matrixA[1][1] = matrixA[1][1] / temp;
+		matrixA[1][2] = matrixA[1][2] / temp;
+//		subtract multiple of row2 from row1
+		temp = matrixA[0][1];
+		matrixA[0][1] = matrixA[0][1] - temp*matrixA[1][1];
+		matrixA[0][2] = matrixA[0][2] - temp*matrixA[1][2];
+		
+		constants[0] = matrixA[0][2];
+		constants[1] = matrixA[1][2];
+		
+		return constants;
 	}
 	public static double[] getCoordsOf3DPointOnPlane( double[] point , Plane plane ) {
 		double dist = getDistanceFromPointToPlane( point , plane );
