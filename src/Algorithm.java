@@ -20,7 +20,6 @@ public class Algorithm {
 				dataValues[1][count] = y;
 				dataValues[2][count] = z;
 				count++;
-				
 			}
 			sc.close();
 		}
@@ -51,7 +50,7 @@ public class Algorithm {
 				double[] constants = rref( pointOnPlane , plane );
 				arrayOf2DPoints[i][0] = constants[0];
 				arrayOf2DPoints[i][1] = constants[1];
-				System.out.println( constants[0] + ", " + constants[1] );
+//				System.out.println( constants[0] + ", " + constants[1] );
 				fw.write( constants[0] + ", " + constants[1] );
 				fw.write( System.getProperty( "line.separator" ) );
 			}
@@ -66,9 +65,7 @@ public class Algorithm {
 //		System.out.println( Arrays.toString( plane.getPoint() ) );
 //		System.out.println( Arrays.toString( point ) );
 //		System.out.println( Arrays.toString( pointOnPlane ) );
-//		System.out.println( Arrays.deepToString( pointsOnPlane ) );
-		
-		
+		System.out.println( Arrays.deepToString( arrayOf2DPoints ) );
 	}
 	public static double[] rref( double[] pointOnPlane , Plane plane ) {
 		double[] constants = new double[2];
