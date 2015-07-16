@@ -23,7 +23,7 @@ public class Algorithm {
 		try {
 			Scanner sc = new Scanner( file );
 			int count = 0;
-			while( sc.hasNextLine() && count < 503 ) {
+			while( sc.hasNextLine() && count < numLines ) {
 				sc.useDelimiter( ", |\\n" );
 				Double x = Double.valueOf( sc.next() );
 				Double y = Double.valueOf( sc.next() );
